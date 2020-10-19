@@ -1,5 +1,7 @@
 package model;
 
+import collection.MoradorDeRepublicaCollection;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -134,6 +136,19 @@ public class Republica extends AbstractModel{
 
     public void adicionarAoFluxoDeCaixa(LancamentoValor novoLancamento) {
         this.getFluxoCaixa().add(novoLancamento);
+    }
+
+    public int getVagasDisponiveis() {
+        long moradores = MoradorDeRepublicaCollection
+                .getMoradoresDeRepublicas()
+                .stream()
+                .filter(
+                        moradorDeRepublica -> moradorDeRepublica.getRepublica().equals(this)
+                                           && moradorDeRepublica.getAtual()
+                )
+                .count();
+
+        return this.vagas - (int) moradores;
     }
 
 }
